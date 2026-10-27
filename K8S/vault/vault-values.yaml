@@ -1,0 +1,92 @@
+global:
+  enabled: true
+  tlsDisable: true
+
+server:
+  enabled: true
+  replicas: 2
+
+  image:
+    repository: hashicorp/vault
+    tag: "1.15.5"
+
+  serviceAccount:
+    create: false
+    name: vault
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 200m
+      memory: 500Mi
+
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 100
+    runAsGroup: 1000
+    fsGroup: 1000
+
+  ha:
+    enabled: true
+    raft:
+      enabled: true
+      setNodeId: true
+      config: |
+        ui = true
+        disable_mlock = true
+
+        api_addr = "http://vault.apurv.online"
+        cluster_addr = "https://$(HOSTNAME).vault-internal:8201"
+
+        listener "tcp" {
+          address         = "0.0.0.0:8200"
+          cluster_address = "0.0.0.0:8201"
+          tls_disable     = 1
+        }
+
+        storage "raft" {
+          path = "/vault/data"
+        }
+
+        service_registration "kubernetes" {}
+
+        seal "awskms" {
+          region     = "us-east-1"
+          kms_key_id = "3a7f9587-7404-4e47-9c32-72a013164d81"
+        }
+
+  dataStorage:
+    enabled: true
+    size: 1Gi
+    storageClass: gp3
+
+  auditStorage:
+    enabled: false
+      #size: 1Gi
+      #storageClass: gp3
+
+  # 🔑 THIS IS THE IMPORTANT FIX
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure,web
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    hosts:
+      - host: vault.apurv.online
+        paths:
+          - /
+    tls:
+      - secretName: vault-tls
+        hosts:
+          - vault.apurv.online
+
+ui:
+  enabled: true
+
+injector:
+  enabled: true
+

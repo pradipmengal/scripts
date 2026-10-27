@@ -1,0 +1,19 @@
+
+# Terraform generated files
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# OpenCode binaries and local data
+.opencode/bin/
+.local/share/opencode/
+
+# Secrets
+.env
+.env.*
+!.env.example
+.opencode/bin/
+.local/share/opencode/
+**/.terraform/
+.aws/

@@ -1,0 +1,66 @@
+deploymentMode: SingleBinary
+
+loki:
+ auth_enabled: false
+
+ commonConfig:
+   replication_factor: 1
+   path_prefix: /var/loki
+
+ schemaConfig:
+   configs:
+     - from: 2024-01-01
+       store: tsdb
+       object_store: s3
+       schema: v13
+       index:
+         prefix: loki_index_
+         period: 24h
+
+ storage:
+   type: s3
+   bucketNames:
+     chunks: eks-loki-logs-apurv-dev
+     ruler: eks-loki-logs-apurv-dev
+     admin: eks-loki-logs-apurv-dev
+   s3:
+     region: us-east-1
+
+ compactor:
+   working_directory: /var/loki/compactor
+
+backend:
+ replicas: 0
+
+read:
+ replicas: 0
+
+write:
+ replicas: 0
+
+gateway:
+ replicas: 0
+
+chunksCache:
+ replicas: 0
+
+resultsCache:
+ replicas: 0
+
+lokiCanary:
+ enabled: false
+
+test:
+ enabled: false
+
+singleBinary:
+ replicas: 1
+ persistence:
+   enabled: true
+   size: 1Gi
+   storageClass: gp3
+
+serviceAccount:
+ create: false
+ name: loki
+

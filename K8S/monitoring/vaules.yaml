@@ -1,0 +1,57 @@
+grafana:
+  adminPassword: admin123
+
+  persistence:
+    enabled: true
+    storageClassName: gp3
+    size: 1Gi
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 300m
+      memory: 400Mi
+
+prometheus:
+  prometheusSpec:
+
+    retention: 7d
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+alertmanager:
+  alertmanagerSpec:
+
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 200m
+        memory: 200Mi

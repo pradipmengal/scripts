@@ -1,0 +1,12 @@
+k9s:
+  cluster: arn:aws:eks:us-east-1:946299734980:cluster/apurv-eks
+  namespace:
+    active: default
+    lockFavorites: false
+    favorites:
+      - default
+  view:
+    active: po
+  featureGates:
+    nodeShell: false
+  proxy: null

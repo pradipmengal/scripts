@@ -1,0 +1,31 @@
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: prod-ec2
+spec:
+  instanceProfile: test-eks-karpenter-instance-profile
+  amiFamily: AL2023
+  subnetSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: test-eks
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: test-eks
+  blockDeviceMappings:
+    - deviceName: /dev/xvda
+      ebs:
+        volumeSize: 80Gi
+        volumeType: gp3
+        encrypted: true
+  metadataOptions:
+    httpEndpoint: enabled
+    httpProtocolIPv6: disabled
+    httpPutResponseHopLimit: 2
+    httpTokens: required
+  tags:
+    Environment: production
+    ManagedBy: karpenter
+    Name: karpenter-node
+    NodeType: karpenter
+
+

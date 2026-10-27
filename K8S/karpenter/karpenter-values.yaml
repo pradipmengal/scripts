@@ -1,0 +1,22 @@
+serviceAccount:
+  create: false
+  name: karpenter
+
+settings:
+  interruptionQueueName: karpenter-interruption
+
+controller:
+  replicas: 2   # HA
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1
+      memory: 2Gi
+
+  env:
+    - name: CLUSTER_NAME
+      value: apurv-eks
+    - name: CLUSTER_ENDPOINT
+      value: https://B2DCC56915107BB3359110AEE072C1D7.gr7.us-east-1.eks.amazonaws.com 

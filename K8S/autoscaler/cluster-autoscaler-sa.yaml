@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-autoscaler
+  namespace: kube-system
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:account::946299734980:account:role/apurv-eks-cluster-autoscaler-role

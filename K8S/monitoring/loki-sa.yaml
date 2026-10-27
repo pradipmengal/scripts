@@ -1,0 +1,8 @@
+# loki-sa.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loki
+  namespace: monitoring
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::735234196953:role/loki-role
